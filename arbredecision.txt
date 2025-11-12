@@ -1,0 +1,44 @@
+A — 32 caractères hex (128 bits)
+	•	Candidats principaux : MD5 (mode Hashcat -m 0) ; NTLM (mode -m 1000) ; parfois MD4.
+	•	Questions à poser (dans l’ordre) :
+	1.	“Trouvé sur une machine Windows / export SAM / format Windows ?”
+	•	Si Oui → privilégier NTLM (1000).
+	•	Si Non → continuer.
+	2.	“Trouvé dans un dump de base web / fichier users / DB (ex: WordPress, ancien PHP app) ?”
+	•	Si Oui → privilégier MD5 (0) ou PHPass si présence de préfixe.
+	3.	“Le hash est en majuscules hex (A–F) ? (tout en MAJ)”
+	•	Si Oui → augmente la probabilité NTLM.
+	•	Si Non → augmente la probabilité MD5.
+	4.	“Le format original contient ‘user:hash’ ou ‘username:hash’ ?”
+	•	Si Oui → si le nom de l’utilisateur est Windows → NTLM ; sinon MD5.
+	•	Résultat : donner % de probabilité (ex. NTLM 60% si Windows, MD5 30%), proposer commande Hashcat correspondante.
+
+B — 40 caractères hex (160 bits)
+	•	Candidats : SHA-1 (-m 100), MySQL double SHA1 (-m 300), RIPEMD-160 (rare).
+	•	Questions :
+	1.	“Provient-il d’un /etc/shadow ou d’un système Unix ?”
+	•	Si Oui → moins probable SHA-1 brut ; vérifier préfixe $ (crypt).
+	2.	“Provient-il d’une base de données MySQL (colonne password) ?”
+	•	Si Oui → MySQL double SHA1 probable (-m 300).
+	3.	Sinon → suggérer SHA-1 (-m 100), avec confiance intermédiaire.
+	•	Actions : afficher probabilités, proposer Hashcat -m 100 et -m 300 (user choisit).
+
+C — 64 caractères hex (256 bits)
+	•	Candidats : SHA-256 (-m 1400), SHA3-256 (moins courant), autres.
+	•	Questions :
+	1.	“Provient-il d’un système moderne (APIs, JWT, stockage sécurisé) ?”
+	•	Si Oui → SHA-256 probable.
+	2.	“Le hash était encodé en Base64 originellement ?”
+	•	Si Oui → considérer décodage Base64 d’abord.
+	•	Résultat : SHA-256 recommandé (confiance élevée).
+
+D — 128 caractères hex (512 bits)
+	•	Candidats : SHA-512 (-m 1700), Whirlpool (-m 6100), etc.
+	•	Question : “Provenance (systèmes UNIX modernes / libs cryptographiques) ?”
+	•	Si /etc/shadow style crypt ($6$) aurait préfixe — si pas de préfixe → SHA-512 probable.
+	•	Résultat : proposer -m 1700 en priorité.
+
+E — 16, 56, 96 hex
+	•	16 hex → MySQL323 (ancien) (-m 200).
+	•	56 hex → SHA-224, rare.
+	•	96 hex → SHA-384 (-m 10800).
