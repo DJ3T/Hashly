@@ -1,0 +1,29 @@
+🧩 1. Lecture améliorée des hashs
+      Fonctionnalité	Description / intérêt
+      Lecture multi-format	Supporter plusieurs formats d’entrée : .txt, .csv, .json, .xml.
+      Détection automatique du format	Si le fichier contient des “=”, “:”, ou “;”, deviner le format automatiquement.
+      Lecture ligne par ligne (streaming)	Éviter de tout charger en mémoire pour les gros fichiers.
+      Validation du format de hash	Vérifie que les hashs lus sont valides pour l’algorithme choisi (ex : longueur SHA256 = 64).
+      Comptage automatique	Afficher le nombre total de hashs lus et testés.
+      Log des erreurs	Enregistre les hashs malformés ou illisibles dans un fichier séparé.
+
+🔐 2. Tests et vérifications de hash
+       Fonctionnalité	Description / intérêt
+       Vérification d’intégrité	Compare chaque hash lu à une valeur attendue (ex : comparer fichiers ou chaînes).
+       Test multi-algorithme	Essaye plusieurs algorithmes (MD5, SHA1, SHA256, etc.) automatiquement.
+       Mode “brute-force” ou “dictionnaire”	Teste des mots de passe possibles contre un hash donné.
+       Support des formats de mot de passe	Détecte et gère les formats type pbkdf2_sha256$itérations$salt$hash.
+       Rapport clair	Affiche “hash valide / invalide” pour chaque ligne testée.
+       Statistiques	Nombre de succès, d’erreurs, de collisions détectées.
+       Mesure du temps d’exécution	Calcule le temps total ou moyen pour chaque test.
+       Comparaison de performance	Compare la rapidité de différents algorithmes de hash.🧠 3. Options avancées et confort utilisateur
+
+🧠 3. Options avancées et confort utilisateur
+    Fonctionnalité	Description / intérêt
+    Interface en ligne de commande (CLI)	Exemple : python verify_hash.py --algo sha256 --file hashes.txt.
+    Support des chemins multiples	Lire plusieurs fichiers de hash en une seule commande.
+    Mode sécurisé	Empêche d’afficher les mots de passe en clair.
+    Export des résultats	Sauvegarde les résultats en .csv ou .json (hash, résultat, durée, etc.).
+    Interface graphique (optionnel)	Pour les utilisateurs non techniques (barre de progression, boutons).
+    Module extensible	Facile à ajouter de nouveaux algorithmes sans tout réécrire.
+    Tests unitaires intégrés	Vérifie que ta fonction lit et teste correctement différents scénarios.
